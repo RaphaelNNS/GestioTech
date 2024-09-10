@@ -1,9 +1,11 @@
-package com.rngam.entities;
+package com.rngam.central.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import com.rngam.central.dtos.TechnicianDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,12 +22,12 @@ public class Technician implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String name;
-	String email;
-	String phoneNumber;
-	String Password;
-	String Cpf;
+	private Long id;
+	private String name;
+	private String email;
+	private String phoneNumber;
+	private String Password;
+	private String Cpf;
 	
 	//TODO IMPLEMENTAR ITERSECÇÃO ENTRE ENTIDADES
 	
@@ -43,6 +45,15 @@ public class Technician implements Serializable{
 		Password = password;
 		Cpf = cpf;
 	}
+	public Technician(TechnicianDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.phoneNumber = dto.getPhoneNumber();
+        this.Password = dto.getPassword();
+        this.Cpf = dto.getCPF();
+        this.contracts = dto.getContracts(); // Supondo que você precise copiar os contratos também
+    }
 	public Long getId() {
 		return id;
 	}

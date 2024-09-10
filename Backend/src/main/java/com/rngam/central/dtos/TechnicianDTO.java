@@ -1,11 +1,12 @@
-package com.rngam.dtos;
+package com.rngam.central.dtos;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.rngam.entities.Contract;
-import com.rngam.entities.Technician;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rngam.central.entities.Contract;
+import com.rngam.central.entities.Technician;
 
 import jakarta.persistence.ManyToMany;
 
@@ -19,7 +20,7 @@ public class TechnicianDTO implements Serializable{
 	private String phoneNumber;
 	private String password;
 	private String CPF;
-
+	@JsonIgnore
 	private Set<Contract> contracts = new HashSet<>();
 
 	public TechnicianDTO(Long id, String name, String email, String phoneNumber, String password, String cPF,

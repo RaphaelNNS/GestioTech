@@ -1,14 +1,19 @@
-package com.rngam.entities;
+package com.rngam.central.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.rngam.enums.PrivacyEnum;
+import com.rngam.central.dtos.ContractDTO;
+import com.rngam.central.enums.PrivacyEnum;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,16 +31,20 @@ public class Contract implements Serializable {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String title;
-	String description;
-	Long value;
+    private Long id;
+    private String title;
+    private String description;
+    @Column(name = "contract_value")
+    private Long value;
 	
     @Enumerated(EnumType.STRING)
-	PrivacyEnum privacy;
+    @Column(columnDefinition = "varchar(255) check (privacy in ('PRIVATE','PUBLIC'))")
+    private PrivacyEnum privacy;
     
     
-	Set<Technician> contractEditors;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "contract_editors", joinColumns = @JoinColumn(name = "contract_id"))
+    private Set<String> contractEditors;
 	
 	//TODO IMPLEMENTAR ITERSECÇÃO ENTRE ENTIDADES
 	
@@ -49,12 +58,56 @@ public class Contract implements Serializable {
 	@OneToMany(mappedBy = "contract")
     private Set<Client> clients = new HashSet<>();
 	
-	public Set<Technician> addTechnicians(Set<Technician> tecs){
+	public Contract(ContractDTO dto) {
+    	this.id = dto.getId();
+    	this.title = dto.getTitle();
+    	this.description = dto.getDescription();
+    	this.value = dto.getValue();
+    	this.privacy = dto.getPrivacy();
+    	this.technicians = dto.getTechnicians();
+    	this.clients = dto.getClients();
+    	this.contractEditors = dto.getContractEditorsId();
+    }
+	
+	public Contract(Long id, String title, String description, Long value, PrivacyEnum privacy,
+			Set<String> contractEditors, Set<Technician> technicians, Set<Client> clients) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.value = value;
+		this.privacy = privacy;
+		this.contractEditors = contractEditors;
+		this.technicians = technicians;
+		this.clients = clients;
+	}
+
+	public Contract() {
+		super();
+	}
+
+	public Set<String> getContractEditors() {
+		return contractEditors;
+	}
+
+	public void setContractEditors(Set<String> contractEditors) {
+		this.contractEditors = contractEditors;
+	}
+
+	public Set<Client> getClients() {
+		return clients;
+	}
+
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
+	}
+
+	public Set<String> addTechniciansId(Set<String> tecs){
 		this.contractEditors.addAll(tecs);
 		return this.contractEditors;
 	}
 	
-	public Set<Technician> removeTechnicians(Set<Technician> tecs){
+	public Set<String> removeTechniciansId(Set<String> tecs){
 		this.contractEditors.removeAll(tecs);
 		return this.contractEditors;
 	}

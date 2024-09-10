@@ -1,4 +1,4 @@
-package com.rngam.enums;
+package com.rngam.central.enums;
 
 public enum PrivacyEnum {
 

@@ -1,6 +1,8 @@
-package com.rngam.entities;
+package com.rngam.central.entities;
 
 import java.io.Serializable;
+
+import com.rngam.central.dtos.ClientDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,10 +20,10 @@ public class Client implements Serializable{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String name;
-	String documentNumber;
-	String password;
+	private Long id;
+	private String name;
+	private String documentNumber;
+	private String password;
 	
 	
 	@ManyToOne
@@ -41,6 +43,14 @@ public class Client implements Serializable{
 		this.documentNumber = documentNumber;
 		this.password = password;
 	}
+	
+	public Client(ClientDTO dto) {
+        this.id = dto.getId();
+        this.name = dto.getName();
+        this.documentNumber = dto.getDocumentNumber();
+        this.password = dto.getPassword();
+        this.contract = dto.getContract();  // Supondo que você já buscou o objeto Contract antes de chamar este construtor
+    }
 
 	public Long getId() {
 		return id;

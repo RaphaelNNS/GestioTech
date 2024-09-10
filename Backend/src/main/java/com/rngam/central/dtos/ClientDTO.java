@@ -1,9 +1,11 @@
-package com.rngam.dtos;
+package com.rngam.central.dtos;
 import java.io.Serializable;
 
-import com.rngam.entities.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rngam.central.entities.Client;
+import com.rngam.central.entities.Contract;
 
-public class ClientDto implements Serializable {
+public class ClientDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,26 +13,27 @@ public class ClientDto implements Serializable {
     private String name;
     private String documentNumber;
     private String password;
-    private Long contractId; // Representação do relacionamento com a entidade Contract
+    @JsonIgnore
+    private Contract contract; 
 
-    public ClientDto() {
+    public ClientDTO() {
         super();
     }
 
-    public ClientDto(Client entity) {
+    public ClientDTO(Client entity) {
         this.id = entity.getId();
         this.name = entity.getName();
         this.documentNumber = entity.getDocumentNumber();
         this.password = entity.getPassword();
-        this.contractId = entity.getContract() != null ? entity.getContract().getId() : null; // Obter o ID do contrato
+        this.contract = entity.getContract() ;
     }
 
-    public ClientDto(Long id, String name, String documentNumber, String password, Long contractId) {
+    public ClientDTO(Long id, String name, String documentNumber, String password, Contract contractId) {
         this.id = id;
         this.name = name;
         this.documentNumber = documentNumber;
         this.password = password;
-        this.contractId = contractId;
+        this.contract = contractId;
     }
 
     // Getters e Setters
@@ -66,11 +69,13 @@ public class ClientDto implements Serializable {
         this.password = password;
     }
 
-    public Long getContractId() {
-        return contractId;
-    }
+	public Contract getContract() {
+		return contract;
+	}
 
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
-    }
+	public void setContract(Contract contract) {
+		this.contract = contract;
+	}
+
+  
 }
