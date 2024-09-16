@@ -13,7 +13,7 @@ This project is a Contract Management System built using Java and Spring framewo
 
 ## Database 
 
-[Documentação](Resource\GestioTech-API.jpeg)
+![Documentação](https://github.com/RaphaelNNS/GestioTech/blob/main/Resource/GestioTech-API.jpeg)
 
 The diagram doesn't show the join table, as JPA does it automatically.
 
